@@ -27,6 +27,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.text.ParseException;  
+import java.text.SimpleDateFormat;  
+
+
 /*
 Person is a POJO, Plain Old Java Object.
 First set of annotations add functionality to POJO
@@ -56,6 +60,12 @@ public class Person {
     @NotEmpty
     private String password;
 
+    @Column(unique=false)
+    private int height;
+
+    @Column(unique=false)
+    private int weight;
+
     // @NonNull, etc placed in params of constructor: "@NonNull @Size(min = 2, max = 30, message = "Name (2 to 30 chars)") String name"
     @NonNull
     @Size(min = 2, max = 30, message = "Name (2 to 30 chars)")
@@ -79,11 +89,13 @@ public class Person {
     
 
     // Constructor used when building object from an API
-    public Person(String email, String password, String name, Date dob) {
+    public Person(String email, String password, String name, Date dob, int height, int weight) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.dob = dob;
+        this.height= height; 
+        this.weight= weight; 
     }
 
     // A custom getter to return age from dob attribute
@@ -92,6 +104,26 @@ public class Person {
             LocalDate birthDay = this.dob.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             return Period.between(birthDay, LocalDate.now()).getYears(); }
         return -1;
+
+    }
+    public String getAgeToString(){
+        return ("\"age\": " + this.getAge() + " }" );
+    }
+
+    public static void main(String[] args) throws ParseException{
+
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");   
+        Date myDate = formatter.parse("01/20/2001");  
+
+        Person allArgsPerson = new Person("ellier@gmail.com", "54321", "Ellie Rozenkrants", myDate, 72, 110 );
+        Person noArgsPerson = new Person();
+
+        System.out.println(noArgsPerson);
+        System.out.println(allArgsPerson);
+    }
+
+    public String toString(){
+        return ("{ \"email\": " + this.email + ", " + "\"password\": " + this.password + ", " + "\"name\": " + this.name + ", " + "\"dob\": " + this.dob +  "\"height\": " + this.height + "," + "\"weight\": " + this.weight+ "}" );
     }
 
 }
