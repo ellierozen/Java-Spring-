@@ -63,14 +63,45 @@ public class Light {
          );
     }
 
+    public void setRGB(short r, short b, short g){
+        this.green = g;
+        this.blue = b;
+        this.red = r;
+    }
+
     /* toString output as key/values */
     public String toString() {
         return( "{" + 
+            "\"on\": " + on + "," +
             "\"red\": " + red + "," +
             "\"green\": " +  green + "," + 
             "\"blue\": " + blue + "," +
             "\"effect\": " + "\"" + EFFECT.get(effect) + "\"" +
             "}" );
+    }
+
+    public boolean isOn(){
+        return this.on;
+    }
+
+    public void setOn(boolean on){
+        this.on = on;
+    }
+
+    public short getEffect() {
+        return effect;
+    }
+
+    public short getRed(){
+        return red;
+    }
+
+    public short getGreen(){
+        return green;
+    }
+
+    public short getBlue(){
+        return blue;
     }
 
     static public void main(String[] args) {
